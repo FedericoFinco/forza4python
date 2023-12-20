@@ -1,5 +1,8 @@
 counter=0
 player=0
+vittoria=4
+colonne=7
+righe=6
 x="ciao"
 print(x)
 import numpy as nmp
@@ -83,13 +86,13 @@ def rightControl(y):
     counter=1
     for c in range((len(m[y]))-1):
         print ("lavoro su",m[y] )
-        if m[y][c]==m[y][c+1]:
+        if m[y][c]==m[y][c+1] and m[y][c]!="":
             counter=counter+1
             # print("il counter sale à",counter,"perchè ",m[y][c],"è uauale a ",m[y][c+1])
         else:
             counter=1
             # print("azzero il counter",counter,"perchè ",m[y][c],"è diverso da ",m[y][c+1])
-        if counter==4:
+        if counter==vittoria:
             print("vittoria")
 
 def LRCrossConrtol(y,x):
@@ -112,11 +115,125 @@ def LRCrossConrtol(y,x):
     #         # print("azzero il counter",counter,"perchè ",m[y][c],"è diverso da ",m[y][c+1])
     #     if counter==4:
     #             print("vittoria")
-    while x!=0 or y!=0
+    while x!=0 and y!=0:
         c=1
         x=x-c
         y=y-c
         c=c+1
+    print("sto partendo da:",y,",",x)
+    if y==0:
+        if x<=(len(m[0])-1 -vittoria):
+            counter=1
+            while y!=righe and x!=colonne:
+                print("lavoro sulla posizione",y,x)
+                c=1
+                x=x+c
+                y=y+c
+                c=c+1
+                
+                if m[y][x]==m[y+1][x+1] and m[y][x]!="":
+                    counter=counter+1
+                    print("il counter sale à",counter,"perchè ",m[y][x],"è uauale a ",m[y+1][x+1])
+                else:
+                    counter=1
+                    print("azzero il counter",counter,"perchè ",m[y][x],"è diverso da ",m[y+1][x+1])
+                if counter==vittoria:
+                    print("vittoria")
+        else:
+            print("il controllo CrossLR non serve perche",x,"è troppo avanti")
+    elif x==0:
+        if y<=((righe) -(vittoria)):
+            counter=1
+            while y!=(righe -1) and x!=(colonne):
+                print("lavoro sulla posizione",y,x)
+                
+                c=1
+                
+                
+                if m[y][x]!="":
+                    print("la confronto con ",y+1,x+1)
+                    if m[y][x]==m[y+1][x+1]:
+                        counter=counter+1
+                        print("y è ",y,"x è ",x)
+                        print("il counter sale à",counter,"perchè ",m[y][x],"è uauale a ",m[y+1][x+1])
+                    else:
+                        counter=1
+                        print("y è ",y,"x è ",x)
+                        print("azzero il counter",counter,"perchè ",m[y][x],"è diverso da ",m[y+1][x+1])
+                    if counter==vittoria:
+                        print("vittoria")
+                else:
+                    print("la posizione ",y,x,"è vuota te la stampo :",m[y][x])
+                x=x+c
+                y=y+c
+                c=c+1
+        else:
+            print("il controllo CrossLR non serve perche",y,"è troppo giù")
+            print("il conto viene da posizione ",((righe +1) -(vittoria)))
+
+
+def RLCrossConrtol(y,x):
+    
+    while x!=colonne-1 and y!=0:
+        c=1
+        x=x+c
+        y=y+c
+        c=c+1
+    print("sto partendo da:",y,",",x)
+    if y==0:
+        if x>= -vittoria:
+            counter=1
+            while y!=righe and x!=0:
+                print("lavoro sulla posizione",y,x)
+                c=1
+                
+                if m[y][x]!="":
+                    if m[y][x]==m[y+1][x-1]:
+                        counter=counter+1
+                        print("il counter sale à",counter,"perchè ",m[y][x],"è uauale a ",m[y+1][x-1])
+                    else:
+                        counter=1
+                        print("azzero il counter",counter,"perchè ",m[y][x],"è diverso da ",m[y+1][x-1])
+                    if counter==vittoria:
+                        print("vittoria")
+                else:
+                    print("la posizione ",y,x,"è vuota te la stampo :",m[y][x])
+                x=x-c
+                y=y+c
+                c=c+1
+        else:
+            print("il controllo CrossRL non serve perche",x,"è troppo avanti")
+            print("il conto viene da questa x in poi ",(vittoria))
+    elif x==colonne-1:
+        if y<=((righe) -(vittoria)):
+            counter=1
+            while y!=(righe -1) and x!=(colonne):
+                print("lavoro sulla posizione",y,x)
+                
+                c=1
+                
+                
+                if m[y][x]!="":
+                    print("la confronto con ",y+1,x-1)
+                    if m[y][x]==m[y+1][x-1]:
+                        counter=counter+1
+                        print("y è ",y,"x è ",x)
+                        print("il counter sale à",counter,"perchè ",m[y][x],"è uauale a ",m[y+1][x-1])
+                    else:
+                        counter=1
+                        print("y è ",y,"x è ",x)
+                        print("azzero il counter",counter,"perchè ",m[y][x],"è diverso da ",m[y+1][x-1])
+                    if counter==vittoria:
+                        print("vittoria")
+                else:
+                    print("la posizione ",y,x,"è vuota te la stampo :",m[y][x])
+                x=x-c
+                y=y+c
+                c=c+1
+        else:
+            print("il controllo CrossLR non serve perche",y,"è troppo giù")
+            print("il conto viene da questa Y in poi ",((righe)-(vittoria)))
+
         
 
 
@@ -141,12 +258,14 @@ def placement(col):
                 (m[i][col-1])=playersign
                 # print("1")
                 # downControl(i,col-1)
-                rightControl(i)
+                # rightControl(i)
+                LRCrossConrtol(i,col-1)
             elif (m[i+1][col-1])!="":
                 (m[i][col-1])=playersign
                 # print("2")
                 # downControl(i,col-1)
-                rightControl(i)
+                # rightControl(i)
+                LRCrossConrtol(i,col-1)
         else:
             pass
             # print("sono nel pass")
