@@ -61,6 +61,71 @@ def turnCounter():
         player=1
     print("tocca al giocatore: ",player)
     
+def downControl(y,x):
+    # if m[y][x]==m[y-1][x]:
+    for c in range(4):
+        if m[y][x]==m[y+(c+1)][x] and m[y][x]!="":
+            pass
+        else:
+            break
+        if c==2:
+            print("vittoria!")
+
+def rightControl(y):
+    # for c in range(4):
+    #     if m[y][x]==m[y][x+(c+1)] and m[y][x]!="":
+    #         pass
+    #     else:
+    #         break
+    #     if c==3:
+    #         print("vittoria!")
+    
+    counter=1
+    for c in range((len(m[y]))-1):
+        print ("lavoro su",m[y] )
+        if m[y][c]==m[y][c+1]:
+            counter=counter+1
+            # print("il counter sale à",counter,"perchè ",m[y][c],"è uauale a ",m[y][c+1])
+        else:
+            counter=1
+            # print("azzero il counter",counter,"perchè ",m[y][c],"è diverso da ",m[y][c+1])
+        if counter==4:
+            print("vittoria")
+
+def LRCrossConrtol(y,x):
+    # counter=0     NON FUNZIONA NEI CASI TIPO TABELLA 4X8
+    # rounds=0
+    # controlY=y
+    # controlX=x
+    # if y>=x:
+    #     x=0
+    #     rounds=(len(m[0])-controlX)
+    # elif x>y:
+    #     y=0
+    #     rounds=(len(m[0])-controlY)
+    # for c in range(rounds):
+    #     if m[y][x]==m[y+(c+1)][x+(c+1)]:
+    #         counter=counter+1
+    #         # print("il counter sale à",counter,"perchè ",m[y][c],"è uauale a ",m[y][c+1])
+    #     else:
+    #         counter=1
+    #         # print("azzero il counter",counter,"perchè ",m[y][c],"è diverso da ",m[y][c+1])
+    #     if counter==4:
+    #             print("vittoria")
+    while x!=0 or y!=0
+        c=1
+        x=x-c
+        y=y-c
+        c=c+1
+        
+
+
+
+
+# def victoryCheck(lastPointY,lastPointX):
+#     print(lastPointY,lastPointX)
+#     if lastPointY
+
 
 
 def placement(col):
@@ -70,21 +135,29 @@ def placement(col):
         playersign="o"
     for i in range(6):
         if (m[i][col-1])=="" and i<=5:
-            print("0")
-            print(i)
+            # print("0")
+            # print(i)
             if i==5 :
                 (m[i][col-1])=playersign
-                print("1")
-            if (m[i+1][col-1])!="":
+                # print("1")
+                # downControl(i,col-1)
+                rightControl(i)
+            elif (m[i+1][col-1])!="":
                 (m[i][col-1])=playersign
-                print("2")
+                # print("2")
+                # downControl(i,col-1)
+                rightControl(i)
         else:
-            # pass
-            print("sono nel pass")
+            pass
+            # print("sono nel pass")
     read()
+
+    
 
 
 read()
+
+
 
 # p1ChoosenCol=int(input("\n scegli una colonna:  "))
 # placement(p1ChoosenCol)
@@ -95,3 +168,4 @@ while victory!="p1" or victory!="p2":
     print("conferma turno player",player)
     p1ChoosenCol=int(input("\n scegli una colonna:  "))
     placement(p1ChoosenCol)
+    
