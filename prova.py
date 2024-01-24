@@ -20,8 +20,9 @@ else:
 
 
 import numpy as nmp
-# m=nmp.array([["","","","","","",""],["","","","","","",""],["","","","","","",""],["","","","","","",""],["","","","","","",""],["","","","","","",""],["c","c","c","c","c","c","c"]])
+# creazione della matrice a due dimensioni
 d=[]
+#con il doppio for creo il mio array mono dimensionale
 for c in range(righe):
 
     for c in range(colonne):
@@ -31,6 +32,7 @@ for c in range(colonne):
 # print(d)
 f=nmp.array(d)
 # print(f)
+#con il reshape gli dò la seconda dimensione 
 m = f.reshape((righe +1), colonne)
 # print(d)
 print(m)
@@ -40,7 +42,9 @@ print(m)
 def read():
     for c in range(righe+1):
         for i in range(colonne):
-            # format per verificare la lettura corretta della matrice
+
+
+            #  VECCHIO CODICE MIGLIORATO format per verificare la lettura corretta della matrice
             # if (m[c][i])=="1":
             #     print("|   ", end='')
             # elif (m[c][i])=="2":
@@ -61,6 +65,9 @@ def read():
             #         print("  {x} |".format(x=i+1),end='')
             # else :
             #     print("|  o ", end='')
+
+            #formattatore della griglia, crea la doppia || all'inizio e alla fine per la parte da gioco,
+            # sotto invece inserisce i numeri delle colonne
             if i == 0 and c!=(righe):
                 print("||", end='')
             if (m[c][i])=="":
@@ -77,8 +84,9 @@ def read():
                 else:
                     print(" {x} |".format(x=i+1),end='')
 
+#tiene il conto dei turni tramite la viarabile globale counter, e scrive a terminale di chi è il turno
 def turnCounter():
-    # counter=0
+    
     global counter
     counter=(counter+1)
 
@@ -91,20 +99,32 @@ def turnCounter():
     else:
         player="p1"
     print("tocca al giocatore: ",player)
-    
+
+#funzione che effettua il controllo verticale delle pedine, andando eventualmente a modificare la variabile
+# globale victory. Per una vittoria verticale devo controllare solo le pedine sottostanti se sono uguali, 
+# quindi controllo andando ad aumentare la y : per ogni iterazione con successo salirà il mio c, altrimenti
+# con il break si interrompe il ciclo e il contatore c non arriverà mai al valore corretto.
 def downControl(y,x):
-    # if m[y][x]==m[y-1][x]:
+    
     global victory
-    for c in range(4):
+    for c in range(vittoria):
         if m[y][x]==m[y+(c+1)][x] and m[y][x]!="":
             pass
         else:
             break
-        if c==2:
+        if c==(vittoria - 2):
             print("vittoria!")
             victory=player
 
+#funzione che effettua il controllo orizzontale delle pedine, andando eventualmente a modificare la variabile
+# globale victory. Il modo piu semplice di farlo è anziche agire partendo dalla posizione dell'ultima pedina
+# inserita lavoro direttamente su tutta la riga. controllo ogni posizione a partire da 0 fino ad arrivare all
+# ultima posizione (r 136). quindi controllo se la posizione attuale è uguale a quella seguente e diversa da
+# stringhe vuote,  in caso positivo aumento il mio counter interno di uno. in caso siano diverse faccio 
+# tornare il counter a 1 (che sarebbe la mia pedina attuale).
 def rightControl(y):
+
+    # CODICE OBSOLETO 
     # for c in range(4):
     #     if m[y][x]==m[y][x+(c+1)] and m[y][x]!="":
     #         pass
@@ -112,6 +132,7 @@ def rightControl(y):
     #         break
     #     if c==3:
     #         print("vittoria!")
+
     global victory
     counter=1
     for c in range((len(m[y]))-1):
@@ -126,7 +147,10 @@ def rightControl(y):
             print("vittoria")
             victory=player
 
+#questa funzione effettua il controllo obliquo da sx verso dx partendo dall'alto. La commenterò tra le righe
+# di codice essendo più complessa. 
 def LRCrossConrtol(y,x):
+
     # counter=0     NON FUNZIONA NEI CASI TIPO TABELLA 4X8
     # rounds=0
     # controlY=y
@@ -146,21 +170,31 @@ def LRCrossConrtol(y,x):
     #         # print("azzero il counter",counter,"perchè ",m[y][c],"è diverso da ",m[y][c+1])
     #     if counter==4:
     #             print("vittoria")
+
     global victory
+    #qui salendo di una riga e una colonna per volta arrivo alla prima posizione della diagonale che mi
+    # interessa
     while x!=0 and y!=0:
         c=1
         x=x-c
         y=y-c
         c=c+1
     print("sto partendo da:",y,",",x)
+    #se la mia Y è arrivata a 0 significa che la casella di partenza si trova al limite superiore della 
+    # griglia. 
     if y==0:
+        #trovandomi sulla prima riga della griglia e muovendomi da sinistra a destra, devo avere
+        # orizzontalmente abbastanza caselle per poter avere una diagonale con la lunghezza minima per la 
+        # vittoria ( la lunghezza della riga - le caselle necessarie per la vittoria ) 
         if x<=(len(m[0])-1 -vittoria):
             counter=1
+            #effettuerò il controllo finche non sarò arrivato all'ultima riga in basso o all'ultima colonna
             while y!=(righe -1) and (x!=colonne-1):
                 print("lavoro sulla posizione",y,x)
                 c=1
                 
-                
+                #qui inizio a confrontare la casella inizale con la successiva nella diagonale sempre con il 
+                # controllo che non sia vuota. in caso positivo counter+1 altrimenti si resetta ad 1
                 if m[y][x]==m[y+1][x+1] and m[y][x]!="":
                     counter=counter+1
                     print("il counter sale à",counter,"perchè ",m[y][x],"è uauale a ",m[y+1][x+1])
@@ -170,20 +204,26 @@ def LRCrossConrtol(y,x):
                 if counter==vittoria:
                     print("vittoria")
                     victory=player
+                # per andare a controllare la casella successiva incremento di uno i valori della posizione
+                # posizione precedente
                 x=x+c
                 y=y+c
-                c=c+1
+                c=c+1  #dubbioso riguardo al perchè io abbia messo questa riga
         else:
             print("il controllo CrossLR non serve perche",x,"è troppo avanti")
+    #se la mia x invece è quella che è arrivata a zero significa che sono sul limite sinistro della griglia
     elif x==0:
+        #qui per avere la diagonale abbastanza lunga devo non trovarmi troppo "all'angolo", per precisione devo
+        # avere verticalmente almeno tante caselle quanto la vittoria (quindi numero totale di righe - vittoria)
         if y<=((righe) -(vittoria)):
             counter=1
+            #effettuerò il controllo finche non sarò arrivato all'ultima riga in basso o all'ultima colonna
             while y!=(righe -1) and x!=(colonne -1):
                 print("lavoro sulla posizione",y,x)
                 
                 c=1
                 
-                
+                #uguale al blocco precedente, faccio il confronto tra le caselle e uso il counter
                 if m[y][x]!="":
                     print("la confronto con ",y+1,x+1)
                     if m[y][x]==m[y+1][x+1]:
